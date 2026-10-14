@@ -1,0 +1,247 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.0753,
+          51.5056
+        ]
+      },
+      "properties": {
+        "name": "Tower Bridge",
+        "description": "Victorian bascule and suspension bridge over the Thames, opened in 1894.",
+        "wikipediaTitle": "Tower_Bridge",
+        "image": {
+          "url": "/landmarks/uk-landmarks/tower-bridge.jpg",
+          "author": "Fuzzypiggy",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tower_Bridge_at_Dawn.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.0761,
+          51.5081
+        ]
+      },
+      "properties": {
+        "name": "Tower of London",
+        "description": "Medieval castle on the Thames founded in 1066, home of the Crown Jewels.",
+        "wikipediaTitle": "Tower_of_London",
+        "image": {
+          "url": "/landmarks/uk-landmarks/tower-of-london.jpg",
+          "author": "Duncan",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tower_of_London_from_the_Shard_(8515883950).jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1245,
+          51.5007
+        ]
+      },
+      "properties": {
+        "name": "Big Ben",
+        "description": "Clock tower at the Palace of Westminster, named after its great bell.",
+        "wikipediaTitle": "Big_Ben",
+        "image": {
+          "url": "/landmarks/uk-landmarks/big-ben.jpg",
+          "author": "Christian David",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Elizabeth_Tower_and_the_north_front_of_the_Palace_of_Westminster,_London.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1419,
+          51.5008
+        ]
+      },
+      "properties": {
+        "name": "Buckingham Palace",
+        "description": "London residence and administrative headquarters of the British monarch.",
+        "wikipediaTitle": "Buckingham_Palace",
+        "image": {
+          "url": "/landmarks/uk-landmarks/buckingham-palace.jpg",
+          "author": "Julian Herzog",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Buckingham_Palace_London_Morning_2020_01_(cropped).jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.0983,
+          51.5138
+        ]
+      },
+      "properties": {
+        "name": "St Paul's Cathedral",
+        "description": "Domed Anglican cathedral rebuilt by Christopher Wren after the Great Fire of 1666.",
+        "wikipediaTitle": "St_Paul's_Cathedral",
+        "image": {
+          "url": "/landmarks/uk-landmarks/st-pauls-cathedral.jpg",
+          "author": "Mark Fosh",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:St_Pauls_aerial_(cropped).jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1194,
+          51.5033
+        ]
+      },
+      "properties": {
+        "name": "London Eye",
+        "description": "Giant observation wheel on the South Bank of the Thames, opened in 2000.",
+        "wikipediaTitle": "London_Eye",
+        "image": {
+          "url": "/landmarks/uk-landmarks/london-eye.jpg",
+          "author": "Khamtran",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:London-Eye-2009.JPG"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1269,
+          51.5194
+        ]
+      },
+      "properties": {
+        "name": "British Museum",
+        "description": "Museum of human history and culture in Bloomsbury, founded in 1753.",
+        "wikipediaTitle": "British_Museum",
+        "image": {
+          "url": "/landmarks/uk-landmarks/british-museum.jpg",
+          "author": "Ham",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:British_Museum_from_NE_2.JPG"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1275,
+          51.4994
+        ]
+      },
+      "properties": {
+        "name": "Westminster Abbey",
+        "description": "Gothic abbey church, the coronation church of English and British monarchs.",
+        "wikipediaTitle": "Westminster_Abbey",
+        "image": {
+          "url": "/landmarks/uk-landmarks/westminster-abbey.jpg",
+          "author": "Antiquary",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Westminster_Abbey,_Westminster.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1281,
+          51.5081
+        ]
+      },
+      "properties": {
+        "name": "Trafalgar Square",
+        "description": "Public square commemorating the Battle of Trafalgar, with Nelson's Column.",
+        "wikipediaTitle": "Trafalgar_Square",
+        "image": {
+          "url": "/landmarks/uk-landmarks/trafalgar-square.jpg",
+          "author": "Diliff",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Trafalgar_Square,_London_2_-_Jun_2009.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.0865,
+          51.5045
+        ]
+      },
+      "properties": {
+        "name": "The Shard",
+        "description": "Skyscraper at London Bridge, the tallest building in the United Kingdom.",
+        "wikipediaTitle": "The_Shard",
+        "image": {
+          "url": "/landmarks/uk-landmarks/the-shard.jpg",
+          "author": "Colin",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_Shard_at_sunset_2017_(cropped).jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.8261,
+          51.1789
+        ]
+      },
+      "properties": {
+        "name": "Stonehenge",
+        "description": "Prehistoric stone circle on Salisbury Plain in England.",
+        "wikipediaTitle": "Stonehenge",
+        "image": {
+          "url": "/landmarks/uk-landmarks/stonehenge.jpg",
+          "author": "garethwiscombe",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Stonehenge2007_07_30.jpg"
+        }
+      }
+    }
+  ]
+}

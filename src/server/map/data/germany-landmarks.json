@@ -1,0 +1,49 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.3777,
+          52.5163
+        ]
+      },
+      "properties": {
+        "name": "Brandenburg Gate",
+        "description": "18th-century neoclassical gate in Berlin, a symbol of German reunification.",
+        "wikipediaTitle": "Brandenburg_Gate",
+        "image": {
+          "url": "/landmarks/germany-landmarks/brandenburg-gate.jpg",
+          "author": "Thomas Wolf",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Brandenburger_Tor_abends.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.7494,
+          47.5575
+        ]
+      },
+      "properties": {
+        "name": "Neuschwanstein Castle",
+        "description": "19th-century castle in the Bavarian Alps, built for King Ludwig II.",
+        "wikipediaTitle": "Neuschwanstein_Castle",
+        "image": {
+          "url": "/landmarks/germany-landmarks/neuschwanstein-castle.jpg",
+          "author": "Thomas Wolf",
+          "license": "CC BY-SA 3.0 de",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/de/deed.en",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Schloss_Neuschwanstein_2013.jpg"
+        }
+      }
+    }
+  ]
+}

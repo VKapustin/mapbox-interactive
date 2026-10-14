@@ -1,0 +1,577 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.4783,
+          37.8199
+        ]
+      },
+      "properties": {
+        "name": "Golden Gate Bridge",
+        "wikipediaTitle": "Golden_Gate_Bridge",
+        "description": "Suspension bridge across the Golden Gate strait, opened in 1937.",
+        "image": {
+          "url": "/landmarks/usa-landmarks/golden-gate-bridge.jpg",
+          "author": "Frank Schulenburg",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Golden_Gate_Bridge_as_seen_from_Battery_East.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.423,
+          37.8267
+        ]
+      },
+      "properties": {
+        "name": "Alcatraz Island",
+        "wikipediaTitle": "Alcatraz_Island",
+        "description": "Island in San Francisco Bay, a federal prison from 1934 to 1963 and now a national park site.",
+        "image": {
+          "url": "/landmarks/usa-landmarks/alcatraz-island.jpg",
+          "author": "Chris6d",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alcatraz_2021.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.4058,
+          37.8024
+        ]
+      },
+      "properties": {
+        "name": "Coit Tower",
+        "wikipediaTitle": "Coit_Tower",
+        "description": "Art Deco tower on Telegraph Hill from 1933, known for the murals inside.",
+        "image": {
+          "url": "/landmarks/usa-landmarks/coit-tower.jpg",
+          "author": "Ryan Schwark",
+          "license": "CC0",
+          "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Coit_Tower_1.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.2578,
+          37.8721
+        ]
+      },
+      "properties": {
+        "name": "Sather Tower, UC Berkeley",
+        "wikipediaTitle": "Sather_Tower",
+        "description": "The campus campanile, completed in 1914, with views across the bay.",
+        "image": {
+          "url": "/landmarks/usa-landmarks/sather-tower.jpg",
+          "author": "Ryan Schwark",
+          "license": "CC0",
+          "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Campanile_Hi-Res_-_reduced_file_size.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.17,
+          37.4275
+        ]
+      },
+      "properties": {
+        "name": "Stanford Main Quad",
+        "wikipediaTitle": "Main_Quad_(Stanford_University)",
+        "description": "Sandstone heart of Stanford University, home to Memorial Church.",
+        "image": {
+          "url": "/landmarks/usa-landmarks/stanford-main-quad.jpg",
+          "author": "Steve Jurvetson",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Stanford_University_Main_Quad_-_7_June_2009.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.951,
+          37.3184
+        ]
+      },
+      "properties": {
+        "name": "Winchester Mystery House",
+        "wikipediaTitle": "Winchester_Mystery_House",
+        "description": "Sprawling Victorian mansion famous for stairs and doors that lead nowhere.",
+        "image": {
+          "url": "/landmarks/usa-landmarks/winchester-mystery-house.jpg",
+          "author": "The wub",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Winchester_Mystery_House_2023-07-17_02.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.4483,
+          37.8028
+        ]
+      },
+      "properties": {
+        "name": "Palace of Fine Arts",
+        "wikipediaTitle": "Palace_of_Fine_Arts",
+        "description": "Rotunda and colonnade built for the 1915 Panama-Pacific Exposition, beside a lagoon.",
+        "image": {
+          "url": "/landmarks/usa-landmarks/palace-of-fine-arts.jpg",
+          "author": "Rhododendrites",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Palace_of_Fine_Arts_(16794p).jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.3937,
+          37.7955
+        ]
+      },
+      "properties": {
+        "name": "Ferry Building",
+        "wikipediaTitle": "San_Francisco_Ferry_Building",
+        "description": "Ferry terminal on the Embarcadero from 1898, now a food hall and marketplace.",
+        "image": {
+          "url": "/landmarks/usa-landmarks/ferry-building.jpg",
+          "author": "Daniel Lu",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ferry_Building_San_Francisco_from_Hyatt_Regency_with_R-Evolution_and_Bay_Bridge_2026_dllu.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.4477,
+          37.7516
+        ]
+      },
+      "properties": {
+        "name": "Twin Peaks",
+        "wikipediaTitle": "Twin_Peaks_(San_Francisco)",
+        "description": "Two hills near the center of San Francisco with sweeping views of the city.",
+        "image": {
+          "url": "/landmarks/usa-landmarks/twin-peaks.jpg",
+          "author": "InvadingInvader",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Twin_Peaks_2022_Aerial.png"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.4331,
+          37.7764
+        ]
+      },
+      "properties": {
+        "name": "Painted Ladies",
+        "wikipediaTitle": "Painted_ladies",
+        "description": "Row of colorful Victorian houses facing Alamo Square park.",
+        "image": {
+          "url": "/landmarks/usa-landmarks/painted-ladies.jpg",
+          "author": "King of Hearts",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Painted_Ladies_San_Francisco_January_2013_panorama_2.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.427,
+          37.7644
+        ]
+      },
+      "properties": {
+        "name": "Mission Dolores",
+        "wikipediaTitle": "Mission_San_Francisco_de_Asís",
+        "description": "Mission chapel completed in 1791, the oldest intact building in San Francisco.",
+        "image": {
+          "url": "/landmarks/usa-landmarks/mission-dolores.jpg",
+          "author": "David Ohmer",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mission_Dolores_(1165072805).jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.4772,
+          37.8106
+        ]
+      },
+      "properties": {
+        "name": "Fort Point",
+        "wikipediaTitle": "Fort_Point_National_Historic_Site",
+        "description": "Civil War-era brick fort beneath the southern end of the Golden Gate Bridge.",
+        "image": {
+          "url": "/landmarks/usa-landmarks/fort-point.jpg",
+          "author": "David Corby",
+          "license": "CC BY 2.5",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.5/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fortpoint02-01-2006.JPG"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.5708,
+          37.8919
+        ]
+      },
+      "properties": {
+        "name": "Muir Woods",
+        "wikipediaTitle": "Muir_Woods_National_Monument",
+        "description": "Old-growth coast redwood forest in Marin County, a national monument since 1908.",
+        "image": {
+          "url": "/landmarks/usa-landmarks/muir-woods.jpg",
+          "author": "Matthew Dillon",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Muir_Woods_National_Monument_(47879029461).jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.2591,
+          37.8039
+        ]
+      },
+      "properties": {
+        "name": "Lake Merritt",
+        "wikipediaTitle": "Lake_Merritt",
+        "description": "Tidal lagoon in downtown Oakland, ringed by a popular walking path.",
+        "image": {
+          "url": "/landmarks/usa-landmarks/lake-merritt.jpg",
+          "author": "David Corby",
+          "license": "CC BY 2.5",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.5/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lakemerrit02192006.JPG"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.0768,
+          37.4144
+        ]
+      },
+      "properties": {
+        "name": "Computer History Museum",
+        "wikipediaTitle": "Computer_History_Museum",
+        "description": "Museum in Mountain View tracing the history of computing.",
+        "image": {
+          "url": "/landmarks/usa-landmarks/computer-history-museum.jpg",
+          "author": "Anton Chiang",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Computer_History_Museum_(9364461418).jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.041,
+          37.2524
+        ]
+      },
+      "properties": {
+        "name": "Hakone Gardens",
+        "wikipediaTitle": "Hakone_Gardens",
+        "description": "Japanese-style gardens in the Saratoga hills, among the oldest in the Western Hemisphere.",
+        "image": {
+          "url": "/landmarks/usa-landmarks/hakone-gardens.jpg",
+          "author": "LPS.1",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hakone_Gardens.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.0444,
+          40.6892
+        ]
+      },
+      "properties": {
+        "name": "Statue of Liberty",
+        "description": "Copper statue on Liberty Island in New York Harbor, a gift from France dedicated in 1886.",
+        "wikipediaTitle": "Statue_of_Liberty",
+        "image": {
+          "url": "/landmarks/usa-landmarks/statue-of-liberty.jpg",
+          "author": "AskALotl",
+          "license": "CC0",
+          "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Front_view_of_Statue_of_Liberty_(cropped).jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.0501,
+          38.8893
+        ]
+      },
+      "properties": {
+        "name": "Lincoln Memorial",
+        "description": "Memorial to Abraham Lincoln at the west end of the National Mall in Washington, D.C.",
+        "wikipediaTitle": "Lincoln_Memorial",
+        "image": {
+          "url": "/landmarks/usa-landmarks/lincoln-memorial.jpg",
+          "author": "Martin Falbisoner",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lincoln_Memorial_east_side.JPG"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -90.185,
+          38.6246
+        ]
+      },
+      "properties": {
+        "name": "Gateway Arch",
+        "description": "Stainless-steel arch in St. Louis, at 630 feet the tallest arch in the world.",
+        "wikipediaTitle": "Gateway_Arch",
+        "image": {
+          "url": "/landmarks/usa-landmarks/gateway-arch.jpg",
+          "author": "Daniel Schwen",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:St_Louis_night_expblend_cropped.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -112.75,
+          36.3
+        ]
+      },
+      "properties": {
+        "name": "Grand Canyon",
+        "description": "Mile-deep canyon carved by the Colorado River in northern Arizona.",
+        "wikipediaTitle": "Grand_Canyon",
+        "image": {
+          "url": "/landmarks/usa-landmarks/grand-canyon.jpg",
+          "author": "Lennart Sikkema",
+          "license": "CC BY 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Canyon_River_Tree_(165872763).jpeg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -103.4592,
+          43.8789
+        ]
+      },
+      "properties": {
+        "name": "Mount Rushmore",
+        "description": "Granite carving of four U.S. presidents in the Black Hills of South Dakota.",
+        "wikipediaTitle": "Mount_Rushmore",
+        "image": {
+          "url": "/landmarks/usa-landmarks/mount-rushmore.jpg",
+          "author": "Thomas Wolf",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mount_Rushmore_detail_view_(100MP).jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.3491,
+          47.6204
+        ]
+      },
+      "properties": {
+        "name": "Space Needle",
+        "description": "Observation tower built in Seattle for the 1962 World's Fair.",
+        "wikipediaTitle": "Space_Needle",
+        "image": {
+          "url": "/landmarks/usa-landmarks/space-needle.jpg",
+          "author": "Jordon Kalilich",
+          "license": "Public domain",
+          "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Space_Needle_2011-07-04.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.7378,
+          36.0156
+        ]
+      },
+      "properties": {
+        "name": "Hoover Dam",
+        "description": "Concrete arch-gravity dam on the Colorado River, completed in 1936.",
+        "wikipediaTitle": "Hoover_Dam",
+        "image": {
+          "url": "/landmarks/usa-landmarks/hoover-dam.jpg",
+          "author": "Mario Roberto Durán Ortiz",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:2017_Aerial_view_Hoover_Dam_4774.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -110.8281,
+          44.4605
+        ]
+      },
+      "properties": {
+        "name": "Old Faithful",
+        "description": "Geyser in Yellowstone National Park known for its regular eruptions.",
+        "wikipediaTitle": "Old_Faithful",
+        "image": {
+          "url": "/landmarks/usa-landmarks/old-faithful.jpg",
+          "author": "Dietmar Rabich",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yellowstone_National_Park_(WY,_USA),_Old_Faithful_Geyser_--_2022_--_2599.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.6358,
+          41.8789
+        ]
+      },
+      "properties": {
+        "name": "Willis Tower",
+        "description": "108-story skyscraper in Chicago, formerly known as the Sears Tower.",
+        "wikipediaTitle": "Willis_Tower",
+        "image": {
+          "url": "/landmarks/usa-landmarks/willis-tower.jpg",
+          "author": "w_lemay",
+          "license": "CC BY-SA 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sears_Tower,_Wacker_Drive_and_Jackson_Boulevard,_Chicago,_IL_-_54189600901.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -98.4861,
+          29.4258
+        ]
+      },
+      "properties": {
+        "name": "The Alamo",
+        "description": "Former Spanish mission in San Antonio, site of the 1836 Battle of the Alamo.",
+        "wikipediaTitle": "Alamo_Mission",
+        "image": {
+          "url": "/landmarks/usa-landmarks/the-alamo.jpg",
+          "author": "Daniel Schwen",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alamo_pano.jpg"
+        }
+      }
+    }
+  ]
+}

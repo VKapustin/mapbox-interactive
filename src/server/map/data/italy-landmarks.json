@@ -1,0 +1,49 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.4922,
+          41.8903
+        ]
+      },
+      "properties": {
+        "name": "Colosseum",
+        "description": "Ancient Roman amphitheatre in the center of Rome, completed in 80 AD.",
+        "wikipediaTitle": "Colosseum",
+        "image": {
+          "url": "/landmarks/italy-landmarks/colosseum.jpg",
+          "author": "FeaturedPics",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Colosseo_2020.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.3964,
+          43.7231
+        ]
+      },
+      "properties": {
+        "name": "Leaning Tower of Pisa",
+        "description": "Bell tower of Pisa Cathedral, famous for its tilt.",
+        "wikipediaTitle": "Leaning_Tower_of_Pisa",
+        "image": {
+          "url": "/landmarks/italy-landmarks/leaning-tower-of-pisa.jpg",
+          "author": "Arne Müseler",
+          "license": "CC BY-SA 3.0 de",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/de/deed.en",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Italy_-_Pisa_-_Leaning_Tower.jpg"
+        }
+      }
+    }
+  ]
+}

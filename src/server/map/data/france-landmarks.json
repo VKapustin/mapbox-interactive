@@ -1,0 +1,247 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.2945,
+          48.8582
+        ]
+      },
+      "properties": {
+        "name": "Eiffel Tower",
+        "description": "Wrought-iron lattice tower on the Champ de Mars, built for the 1889 World's Fair.",
+        "wikipediaTitle": "Eiffel_Tower",
+        "image": {
+          "url": "/landmarks/france-landmarks/eiffel-tower.jpg",
+          "author": "Benh LIEU SONG",
+          "license": "Public domain",
+          "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tour_Eiffel_Wikimedia_Commons_(cropped).jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.3358,
+          48.8611
+        ]
+      },
+      "properties": {
+        "name": "Louvre",
+        "description": "The world's most-visited museum, housed in a former royal palace.",
+        "wikipediaTitle": "Louvre",
+        "image": {
+          "url": "/landmarks/france-landmarks/louvre.jpg",
+          "author": "Benh LIEU SONG",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Louvre_Museum_Wikimedia_Commons.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.35,
+          48.8531
+        ]
+      },
+      "properties": {
+        "name": "Notre-Dame de Paris",
+        "description": "Gothic cathedral on the Île de la Cité, reopened in 2024 after the 2019 fire.",
+        "wikipediaTitle": "Notre-Dame_de_Paris",
+        "image": {
+          "url": "/landmarks/france-landmarks/notre-dame-de-paris.jpg",
+          "author": "Ali Sabbagh",
+          "license": "CC0",
+          "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Notre-Dame_de_Paris,_4_October_2017.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.295,
+          48.8738
+        ]
+      },
+      "properties": {
+        "name": "Arc de Triomphe",
+        "description": "Triumphal arch at the top of the Champs-Élysées, honoring those who fought for France.",
+        "wikipediaTitle": "Arc_de_Triomphe",
+        "image": {
+          "url": "/landmarks/france-landmarks/arc-de-triomphe.jpg",
+          "author": "ZeusUpsistos",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Arc_de_Triomphe_-_Ao%C3%BBt_2026.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.3458,
+          48.8461
+        ]
+      },
+      "properties": {
+        "name": "Panthéon",
+        "description": "Neoclassical monument in the Latin Quarter, burial place of notable French citizens.",
+        "wikipediaTitle": "Panthéon",
+        "image": {
+          "url": "/landmarks/france-landmarks/pantheon.jpg",
+          "author": "Moonik",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pantheon_of_Paris_007.JPG"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.345,
+          48.8553
+        ]
+      },
+      "properties": {
+        "name": "Sainte-Chapelle",
+        "description": "Royal chapel from the 1240s, famous for its stained-glass windows.",
+        "wikipediaTitle": "Sainte-Chapelle",
+        "image": {
+          "url": "/landmarks/france-landmarks/sainte-chapelle.jpg",
+          "author": "Didier B",
+          "license": "CC BY-SA 2.5",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sainte_Chapelle_-_Upper_level_1.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.3212,
+          48.8656
+        ]
+      },
+      "properties": {
+        "name": "Place de la Concorde",
+        "description": "The largest public square in Paris, centered on an ancient Egyptian obelisk.",
+        "wikipediaTitle": "Place_de_la_Concorde",
+        "image": {
+          "url": "/landmarks/france-landmarks/place-de-la-concorde.jpg",
+          "author": "Cristian Bortes",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Place_de_la_Concorde_from_the_Eiffel_Tower,_Paris_April_2011.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.3317,
+          48.8719
+        ]
+      },
+      "properties": {
+        "name": "Palais Garnier",
+        "description": "Opera house from 1875, the setting of The Phantom of the Opera.",
+        "wikipediaTitle": "Palais_Garnier",
+        "image": {
+          "url": "/landmarks/france-landmarks/palais-garnier.jpg",
+          "author": "Peter Rivera",
+          "license": "CC BY 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Paris_Opera_full_frontal_architecture,_May_2009.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.3417,
+          48.8575
+        ]
+      },
+      "properties": {
+        "name": "Pont Neuf",
+        "description": "Despite its name, \"New Bridge\", the oldest standing bridge across the Seine in Paris.",
+        "wikipediaTitle": "Pont_Neuf",
+        "image": {
+          "url": "/landmarks/france-landmarks/pont-neuf.jpg",
+          "author": "Rmrfstar",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_western_sides_of_the_%C3%8Ele_de_la_Cit%C3%A9_and_the_Pont_Neuf,_14_July_2008.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.3372,
+          48.8469
+        ]
+      },
+      "properties": {
+        "name": "Jardin du Luxembourg",
+        "description": "Public garden around the Luxembourg Palace, home of the French Senate.",
+        "wikipediaTitle": "Jardin_du_Luxembourg",
+        "image": {
+          "url": "/landmarks/france-landmarks/jardin-du-luxembourg.jpg",
+          "author": "Kirua",
+          "license": "Public domain",
+          "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:LuxembourgMontparnasse.JPG"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1.511,
+          48.636
+        ]
+      },
+      "properties": {
+        "name": "Mont-Saint-Michel",
+        "description": "Tidal island in Normandy topped by a medieval abbey.",
+        "wikipediaTitle": "Mont-Saint-Michel",
+        "image": {
+          "url": "/landmarks/france-landmarks/mont-saint-michel.jpg",
+          "author": "Amaustan",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mont-Saint-Michel_vu_du_ciel.jpg"
+        }
+      }
+    }
+  ]
+}

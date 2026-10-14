@@ -1,0 +1,49 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.1743,
+          41.4037
+        ]
+      },
+      "properties": {
+        "name": "Sagrada Família",
+        "description": "Antoni Gaudí's basilica in Barcelona, under construction since 1882.",
+        "wikipediaTitle": "Sagrada_Família",
+        "image": {
+          "url": "/landmarks/spain-landmarks/sagrada-familia.jpg",
+          "author": "Canaan",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:SF_maig_2_cropped.jpg"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.59,
+          37.1775
+        ]
+      },
+      "properties": {
+        "name": "Alhambra",
+        "description": "Palace and fortress complex in Granada, a masterpiece of Moorish architecture.",
+        "wikipediaTitle": "Alhambra",
+        "image": {
+          "url": "/landmarks/spain-landmarks/alhambra.jpg",
+          "author": "Jebulon",
+          "license": "CC0",
+          "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dawn_Charles_V_Palace_Alhambra_Granada_Andalusia_Spain.jpg"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.4119,
+          50.0864
+        ]
+      },
+      "properties": {
+        "name": "Charles Bridge",
+        "description": "Medieval stone bridge across the Vltava river in Prague.",
+        "wikipediaTitle": "Charles_Bridge",
+        "image": {
+          "url": "/landmarks/czechia-landmarks/charles-bridge.jpg",
+          "author": "A.Savin",
+          "license": "FAL",
+          "licenseUrl": "https://artlibre.org/licence/lal/en/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Prague_07-2016_view_from_Lesser_Town_Tower_of_Charles_Bridge_img3.jpg"
+        }
+      }
+    }
+  ]
+}

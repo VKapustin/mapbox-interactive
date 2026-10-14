@@ -1,0 +1,27 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.7261,
+          37.9717
+        ]
+      },
+      "properties": {
+        "name": "Acropolis of Athens",
+        "description": "Ancient citadel above Athens, crowned by the Parthenon.",
+        "wikipediaTitle": "Acropolis_of_Athens",
+        "image": {
+          "url": "/landmarks/greece-landmarks/acropolis-of-athens.jpg",
+          "author": "Giles Laurent",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:1029_Acropolis_of_Athens_in_Greece_at_night_Photo_by_Giles_Laurent.jpg"
+        }
+      }
+    }
+  ]
+}
