@@ -67,7 +67,8 @@ export const DEVELOPER = {
 // them; both are two 32px buttons and a divider. Along the top: the search box
 // and the panel (style picker, landmarks), which must stop above the drawing tool.
 export const MAP_CONTROL_GAP = 12;
-export const MAP_BUTTON_STACK_HEIGHT = 2 * 32 + 1;
+export const MAP_BUTTON_SIZE = 32;
+export const MAP_BUTTON_STACK_HEIGHT = 2 * MAP_BUTTON_SIZE + 1;
 export const ZOOM_CONTROLS_BOTTOM = 36;
 export const DRAWING_TOOL_BOTTOM = ZOOM_CONTROLS_BOTTOM + MAP_BUTTON_STACK_HEIGHT + MAP_CONTROL_GAP;
 // Where the top controls end: a gap above the drawing tool.

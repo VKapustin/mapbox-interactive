@@ -12,11 +12,17 @@ import { fromLonLat } from 'ol/proj';
 import type BaseEvent from 'ol/events/Event';
 import type SimpleGeometry from 'ol/geom/SimpleGeometry';
 import { useFeatureSelect } from '@/hooks/map/useFeatureSelect/useFeatureSelect';
+import { parseAoi } from '@/helpers/aoiHelpers';
 import { useMap } from '@/hooks/map/useMap/useMap';
 import { FEATURE_HIT_TOLERANCE, ZOOM_TO_LAYER_DURATION_MS } from '@/constant/constant';
 import { createMapContextValue } from '@tests/support/mapFixtures';
 
 vi.mock('@/hooks/map/useMap/useMap', () => ({ useMap: vi.fn() }));
+// The real AOI helpers, observed: to count how often the AOI is parsed.
+vi.mock('@/helpers/aoiHelpers', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/helpers/aoiHelpers')>();
+  return { ...actual, parseAoi: vi.fn(actual.parseAoi) };
+});
 
 const createLandmarkLayer = () => {
   const layer = new VectorLayer({ source: new VectorSource() });
@@ -386,6 +392,16 @@ describe('useFeatureSelect', () => {
       const { result } = selectCoit(aoiAround(COIT));
 
       expect(result.current.selected?.name).toBe('Coit Tower');
+    });
+
+    it('parses the area once, not on every render', () => {
+      const { rerender } = selectCoit(aoiAround(COIT));
+      vi.mocked(parseAoi).mockClear();
+
+      rerender();
+      rerender();
+
+      expect(parseAoi).not.toHaveBeenCalled();
     });
 
     it('hides a selection once an area that leaves it out is drawn', () => {

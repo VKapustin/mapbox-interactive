@@ -41,6 +41,8 @@ describe('useDraw', () => {
   let setAoiFromElsewhere: (aoi: string | null) => void;
   // Every value useDraw passed to setAoi.
   let aoiUpdates: (string | null)[];
+  // The AOI in the map context as of the last render (useDraw doesn't return it).
+  let contextAoi: string | null;
 
   beforeEach(() => {
     // Draw works in screen pixels, so the map needs a size and a rendered frame.
@@ -57,6 +59,7 @@ describe('useDraw', () => {
     vi.mocked(useMap).mockImplementation(() => {
       const [aoi, setAoi] = useState<string | null>(null);
       setAoiFromElsewhere = setAoi;
+      contextAoi = aoi;
       return createMapContextValue({ map, aoi, setAoi: (next) => {
         aoiUpdates.push(next);
         setAoi(next);
@@ -67,7 +70,7 @@ describe('useDraw', () => {
   it('starts with no area and not drawing, and adds its layer above the landmarks', () => {
     const { result } = renderHook(() => useDraw());
 
-    expect(result.current.aoi).toBeNull();
+    expect(contextAoi).toBeNull();
     expect(result.current.isDrawing).toBe(false);
     expect(getAoiLayer(map)).toBeDefined();
     expect(getDraw(map)).toBeUndefined();
@@ -97,7 +100,7 @@ describe('useDraw', () => {
     act(() => result.current.startDrawing());
     await drawPolygon(map);
 
-    const aoi = JSON.parse(result.current.aoi!);
+    const aoi = JSON.parse(contextAoi!);
     expect(aoi.type).toBe('Polygon');
     // A closed ring: the corners, then the first one again.
     expect(aoi.coordinates[0]).toEqual([...TRIANGLE, TRIANGLE[0]]);
@@ -120,8 +123,58 @@ describe('useDraw', () => {
       map.handleMapBrowserEvent(new MapBrowserEvent('dblclick', map, new PointerEvent('dblclick')));
     });
 
-    expect(result.current.aoi).not.toBeNull();
+    expect(contextAoi).not.toBeNull();
     expect(handleEvent).not.toHaveBeenCalled();
+  });
+
+  it('moves an area drawn on a repeated copy of the world back within ±180°', async () => {
+    const { result } = renderHook(() => useDraw());
+
+    act(() => result.current.startDrawing());
+    // The triangle two worlds to the east, as drawn when zoomed far out.
+    await drawPolygon(map, TRIANGLE.map(([lon, lat]) => [lon + 720, lat] as [number, number]));
+
+    const [ring] = JSON.parse(contextAoi!).coordinates;
+    expect(ring.map(([lon]: number[]) => Math.round(lon * 1e6) / 1e6)).toEqual([...TRIANGLE, TRIANGLE[0]].map(([lon]) => lon));
+  });
+
+  it('doesn\'t use an area the server would reject', async () => {
+    const { result } = renderHook(() => useDraw());
+    // More corners than AOI_MAX_VERTICES allows.
+    const tooMany = Array.from({ length: 400 }, (_, i) => {
+      const angle = (i / 400) * 2 * Math.PI;
+      return [-122.4 + 0.05 * Math.cos(angle), 37.75 + 0.05 * Math.sin(angle)] as [number, number];
+    });
+
+    act(() => result.current.startDrawing());
+    await drawPolygon(map, tooMany);
+
+    expect(contextAoi).toBeNull();
+    expect(result.current.isDrawing).toBe(false);
+    // Reported, so the user knows why the polygon disappeared.
+    expect(result.current.areaRejected).toBe(true);
+
+    act(() => result.current.startDrawing());
+    expect(result.current.areaRejected).toBe(false);
+  });
+
+  it('dismisses the rejection when the area is cleared', async () => {
+    const { result } = renderHook(() => useDraw());
+    const tooMany = Array.from({ length: 400 }, (_, i) => {
+      const angle = (i / 400) * 2 * Math.PI;
+      return [-122.4 + 0.05 * Math.cos(angle), 37.75 + 0.05 * Math.sin(angle)] as [number, number];
+    });
+    // A previous area stays on the map, so the eraser has something to clear.
+    act(() => result.current.startDrawing());
+    await drawPolygon(map);
+    act(() => result.current.startDrawing());
+    await drawPolygon(map, tooMany);
+    expect(result.current.areaRejected).toBe(true);
+
+    act(() => result.current.clearDrawing());
+
+    expect(result.current.areaRejected).toBe(false);
+    expect(contextAoi).toBeNull();
   });
 
   it('replaces the previous area with a newly finished one', async () => {
@@ -133,7 +186,7 @@ describe('useDraw', () => {
     await drawPolygon(map, [[2.29, 48.85], [2.35, 48.85], [2.32, 48.88]]);
 
     expect(getAoiLayer(map)!.getSource()!.getFeatures()).toHaveLength(1);
-    expect(JSON.parse(result.current.aoi!).coordinates[0][0]).toEqual([2.29, 48.85]);
+    expect(JSON.parse(contextAoi!).coordinates[0][0]).toEqual([2.29, 48.85]);
   });
 
   it('keeps the finished area when a new drawing is cancelled', async () => {
@@ -141,11 +194,11 @@ describe('useDraw', () => {
 
     act(() => result.current.startDrawing());
     await drawPolygon(map);
-    const aoi = result.current.aoi;
+    const aoi = contextAoi;
     act(() => result.current.startDrawing());
     act(() => result.current.stopDrawing());
 
-    expect(result.current.aoi).toBe(aoi);
+    expect(contextAoi).toBe(aoi);
     expect(result.current.isDrawing).toBe(false);
     expect(getDraw(map)).toBeUndefined();
     expect(getAoiLayer(map)!.getSource()!.getFeatures()).toHaveLength(1);
@@ -163,7 +216,7 @@ describe('useDraw', () => {
     expect(getDraw(map)).toBeUndefined();
   });
 
-  it('marks the Escape it handled, so the details drawer stays open', () => {
+  it('marks the Escape it handled', () => {
     const { result } = renderHook(() => useDraw());
     const escape = new KeyboardEvent('keydown', { key: 'Escape', cancelable: true });
 
@@ -175,9 +228,9 @@ describe('useDraw', () => {
     expect(escape.defaultPrevented).toBe(true);
   });
 
-  it('keeps drawing on an Escape something else already handled (e.g. the popup)', () => {
+  it('keeps drawing on an Escape a focused control already used (e.g. the search box)', () => {
     const { result } = renderHook(() => useDraw());
-    // Another capture listener registered first, as the open popup's would be.
+    // As MUI's search box does when Escape closes its suggestions.
     const closePopup = (event: KeyboardEvent) => event.preventDefault();
     document.addEventListener('keydown', closePopup, true);
 
@@ -210,7 +263,7 @@ describe('useDraw', () => {
     act(() => result.current.startDrawing());
     act(() => result.current.clearDrawing());
 
-    expect(result.current.aoi).toBeNull();
+    expect(contextAoi).toBeNull();
     expect(result.current.isDrawing).toBe(false);
     expect(getDraw(map)).toBeUndefined();
     expect(getAoiLayer(map)!.getSource()!.getFeatures()).toHaveLength(0);

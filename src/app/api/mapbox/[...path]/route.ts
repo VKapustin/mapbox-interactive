@@ -1,5 +1,5 @@
 import type { NextRequest } from 'next/server';
-import { UPSTREAM_TIMEOUT_MS } from '@/constant/constant';
+import { fetchWithTimeout, upstreamFailure } from '@/server/upstream';
 
 const MAPBOX_API = 'https://api.mapbox.com';
 
@@ -64,11 +64,10 @@ export async function GET(
 
   let res: Response;
   try {
-    res = await fetch(upstream, { signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS) });
+    // Stops with the browser's request, e.g. a tile OpenLayers no longer needs.
+    res = await fetchWithTimeout(upstream, { signal: request.signal });
   } catch (err) {
-    // Mapbox too slow (504) or unreachable (502).
-    const timedOut = err instanceof Error && err.name === 'TimeoutError';
-    return new Response(timedOut ? 'Gateway timeout' : 'Bad gateway', { status: timedOut ? 504 : 502 });
+    return upstreamFailure(err);
   }
   
   if (!res.ok) {

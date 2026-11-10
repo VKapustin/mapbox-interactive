@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type Map from 'ol/Map';
 import type { Coordinate } from 'ol/coordinate';
 import type { FeatureLike } from 'ol/Feature';
@@ -145,7 +145,8 @@ export const useFeatureSelect = (): FeatureSelect => {
 
   // A selection on a layer that has since been hidden, or outside an area of
   // interest drawn since, shouldn't stay on screen.
-  const parsedAoi = aoi ? parseAoi(aoi) : null;
+  // Parsed once per AOI, which also lets isInAoi reuse the polygon's projection.
+  const parsedAoi = useMemo(() => (aoi ? parseAoi(aoi) : null), [aoi]);
   const visibleSelected = selected
     && layerVisibility[selected.layerId]
     && (!parsedAoi || isInAoi(parsedAoi, selected.lonLat))

@@ -21,6 +21,7 @@ import { formatLonLat } from '@/helpers/mapHelpers';
 import { FEATURE_POPUP_OFFSET } from '@/constant/constant';
 import { type SelectedFeature, useFeatureSelect, useMap } from '@/hooks/map';
 import { useString } from '@/hooks/string';
+import { useEscape } from '@/hooks/escape';
 
 type MapFeaturePopupProps = {
   // Opens more information (the details drawer); the popup closes itself.
@@ -68,25 +69,8 @@ const MapFeaturePopup: FC<MapFeaturePopupProps> = ({ onShowMore }) => {
     overlayRef.current?.setPosition(selected?.coordinate);
   }, [selected]);
 
-  useEffect(() => {
-    if (!selected) {
-      return;
-    }
-
-    const closeOnEscape = (event: KeyboardEvent) => {
-      // One press closes one thing: leave an Escape something else handled.
-      if (event.key === 'Escape' && !event.defaultPrevented) {
-        clearSelected();
-        // Handled: the details drawer stays open until the next Escape.
-        event.preventDefault();
-      }
-    };
-
-    // Capture phase, so this runs before the drawer's listener.
-    document.addEventListener('keydown', closeOnEscape, true);
-
-    return () => document.removeEventListener('keydown', closeOnEscape, true);
-  }, [selected, clearSelected]);
+  // Escape closes the popup (before anything opened earlier, such as the details drawer).
+  useEscape(!!selected, clearSelected);
 
   const photo = selected?.image && selected.image.url !== failedPhotoUrl ? selected.image : undefined;
 

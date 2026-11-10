@@ -1,30 +1,11 @@
-import { IconButton, Paper } from '@mui/material'
+import { IconButton } from '@mui/material'
 import {styled} from '@mui/material/styles';
-import { MAP_CONTROL_GAP, ZOOM_CONTROLS_BOTTOM } from '@/constant/constant';
+import { ZOOM_CONTROLS_BOTTOM } from '@/constant/constant';
+import { MapButtonStack, mapStackButtonStyle } from '@/components/MapButtonStack/styles/mapButtonStack.styles';
 
 // Bottom right, just above the attribution text that OpenLayers draws in the corner.
-export const MapZoomControlsWrapper = styled(Paper)(({ theme }) => {
-  const { palette } = theme.vars ?? theme;
-  return {
-    position: 'absolute',
-    right: `${MAP_CONTROL_GAP}px`,
-    bottom: `${ZOOM_CONTROLS_BOTTOM}px`,
-    zIndex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    borderRadius: '8px',
-    overflow: 'hidden',
-    backgroundColor: palette.background.paper,
-    // Dark-mode Paper adds a lightening overlay; keep the plain background.
-    backgroundImage: 'none',
-    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)',
-    '& > * + *': {
-      borderTop: `1px solid ${palette.divider}`,
-    },
-  };
+export const MapZoomControlsWrapper = styled(MapButtonStack)({
+  bottom: `${ZOOM_CONTROLS_BOTTOM}px`,
 });
 
-export const MapZoomButton = styled(IconButton)({
-  borderRadius: 0,
-  padding: '6px',
-});
+export const MapZoomButton = styled(IconButton)(mapStackButtonStyle);

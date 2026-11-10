@@ -65,13 +65,90 @@ describe('LandmarksControl', () => {
     expect(await screen.findByRole('tooltip')).toHaveTextContent(name);
   });
 
-  it('disables zooming to a layer while a style is loading', () => {
-    vi.mocked(useMap).mockReturnValue(createMapContextValue({ status: 'loading' }));
+  describe('soft-disabled zoom buttons', () => {
+    const emptyArea = () => vi.mocked(useMap).mockReturnValue(createMapContextValue({
+      aoi: '{}',
+      aoiSummary: { landmarks: { count: 0, total: 5, extent: null } },
+      zoomToLayer: vi.fn(),
+    }));
+    const reason = 'Nothing to zoom to: no landmarks in the selected area';
+
+    it('says why a country can\'t be zoomed to on hover', async () => {
+      emptyArea();
+      const user = userEvent.setup();
+      renderWithTheme(<LandmarksControl />);
+
+      await user.hover(screen.getByRole('button', { name: 'Zoom to Landmarks' }));
+
+      expect(await screen.findByRole('tooltip')).toHaveTextContent(reason);
+    });
+
+    it('stays in the Tab order (a disabled button would be skipped)', async () => {
+      emptyArea();
+      const user = userEvent.setup();
+      renderWithTheme(<LandmarksControl />);
+      const zoom = screen.getByRole('button', { name: 'Zoom to Landmarks' });
+
+      for (let presses = 0; presses < 20 && document.activeElement !== zoom; presses++) {
+        await user.tab();
+      }
+
+      expect(zoom).toHaveFocus();
+      expect(zoom).toHaveAttribute('aria-disabled', 'true');
+    });
+
+    it('is described by the reason while its tooltip shows, for screen readers', async () => {
+      emptyArea();
+      const user = userEvent.setup();
+      renderWithTheme(<LandmarksControl />);
+      const zoom = screen.getByRole('button', { name: 'Zoom to Landmarks' });
+
+      await user.hover(zoom);
+      await screen.findByRole('tooltip');
+
+      expect(zoom).toHaveAccessibleDescription(reason);
+    });
+
+    it('does nothing when clicked', async () => {
+      emptyArea();
+      const user = userEvent.setup();
+      renderWithTheme(<LandmarksControl />);
+
+      await user.click(screen.getByRole('button', { name: 'Zoom to Landmarks' }));
+
+      expect(vi.mocked(useMap)().zoomToLayer).not.toHaveBeenCalled();
+    });
+
+    it.each(['Show and zoom to all landmarks', 'Zoom to Landmarks'])(
+      'says why "%s" waits while a style is loading',
+      async (name) => {
+        vi.mocked(useMap).mockReturnValue(createMapContextValue({ status: 'loading' }));
+        const user = userEvent.setup();
+        renderWithTheme(<LandmarksControl />);
+        const button = screen.getByRole('button', { name });
+
+        await user.hover(button);
+
+        expect(await screen.findByRole('tooltip')).toHaveTextContent('Available once the map style has loaded');
+        expect(button).toHaveAccessibleDescription('Available once the map style has loaded');
+      },
+    );
+  });
+
+  it('soft-disables the zoom buttons while a style is loading', async () => {
+    const zoomToLayer = vi.fn();
+    const zoomToLayers = vi.fn();
+    vi.mocked(useMap).mockReturnValue(createMapContextValue({ status: 'loading', zoomToLayer, zoomToLayers }));
+    const user = userEvent.setup();
 
     renderWithTheme(<LandmarksControl />);
+    await user.click(screen.getByRole('button', { name: 'Zoom to Landmarks' }));
+    await user.click(screen.getByRole('button', { name: 'Show and zoom to all landmarks' }));
 
-    expect(screen.getByRole('button', { name: 'Zoom to Landmarks' })).toBeDisabled();
-    expect(screen.getByRole('button', { name: 'Show and zoom to all landmarks' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Zoom to Landmarks' })).toHaveAttribute('aria-disabled', 'true');
+    expect(screen.getByRole('button', { name: 'Show and zoom to all landmarks' })).toHaveAttribute('aria-disabled', 'true');
+    expect(zoomToLayer).not.toHaveBeenCalled();
+    expect(zoomToLayers).not.toHaveBeenCalled();
   });
 
   describe('layer checkboxes as colored circles', () => {
@@ -162,7 +239,7 @@ describe('LandmarksControl', () => {
       renderWithTheme(<LandmarksControl />);
 
       expect(screen.getByRole('status')).toHaveTextContent('No landmarks in the selected area.');
-      expect(screen.getByRole('button', { name: 'Zoom to Landmarks' })).toBeDisabled();
+      expect(screen.getByRole('button', { name: 'Zoom to Landmarks' })).toHaveAttribute('aria-disabled', 'true');
       // The layers can still be shown and hidden.
       expect(screen.getByRole('checkbox', { name: 'Landmarks' })).toBeEnabled();
     });
@@ -176,7 +253,15 @@ describe('LandmarksControl', () => {
       renderWithTheme(<LandmarksControl />);
 
       expect(screen.getByRole('status')).toBeEmptyDOMElement();
-      expect(screen.getByRole('button', { name: 'Zoom to Landmarks' })).toBeEnabled();
+      expect(screen.getByRole('button', { name: 'Zoom to Landmarks' })).not.toHaveAttribute('aria-disabled');
+    });
+
+    it('says so when the landmarks in the area couldn\'t be loaded', () => {
+      vi.mocked(useMap).mockReturnValue(createMapContextValue({ aoi: '{}', aoiSummary: null, aoiSummaryFailed: true }));
+
+      renderWithTheme(<LandmarksControl />);
+
+      expect(screen.getByRole('status')).toHaveTextContent('Couldn\'t load the landmarks in the selected area. Try drawing it again.');
     });
 
     it('says nothing while the area\'s summary is loading', () => {

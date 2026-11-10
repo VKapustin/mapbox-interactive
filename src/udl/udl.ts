@@ -19,10 +19,28 @@ export class UdlError extends Error {
   }
 }
 
+// A signal that aborts as soon as any of `signals` does, with that one's
+// reason. Like AbortSignal.any, which this browser code can't rely on: it's
+// missing before Safari 17.4 (iOS 17.4), Chrome 116 and Firefox 124.
+export const anySignal = (signals: AbortSignal[]): AbortSignal => {
+  const controller = new AbortController();
+
+  for (const signal of signals) {
+    if (signal.aborted) {
+      controller.abort(signal.reason);
+      break;
+    }
+    // Removed once the combined signal aborts, so nothing is kept alive.
+    signal.addEventListener('abort', () => controller.abort(signal.reason), { once: true, signal: controller.signal });
+  }
+
+  return controller.signal;
+};
+
 // The caller's signal (e.g. a component unmounting), plus a timeout.
 const withTimeout = (signal?: AbortSignal): AbortSignal => {
   const timeout = AbortSignal.timeout(UDL_TIMEOUT_MS);
-  return signal ? AbortSignal.any([signal, timeout]) : timeout;
+  return signal ? anySignal([signal, timeout]) : timeout;
 };
 
 const getRetryAfterMs = (res: Response): number | undefined => {

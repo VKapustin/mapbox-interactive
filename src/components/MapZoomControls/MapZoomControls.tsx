@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useSyncExternalStore } from 'react';
+import { FC, useCallback, useSyncExternalStore } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { unByKey } from 'ol/Observable';
@@ -18,12 +18,16 @@ const MapZoomControls: FC = () => {
   const text = useString('zoomControls');
   const view = map?.getView();
 
-  // Follows the view's zoom so the buttons disable at the min / max zoom.
+  // Follows the view's zoom so the buttons disable at the min / max zoom. The
+  // same subscribe function for a view, so React subscribes once, not after
+  // every render (each zoom step re-renders).
+  const subscribe = useCallback((onChange: () => void) => {
+    const key = view?.on('change:resolution', onChange);
+    return () => key && unByKey(key);
+  }, [view]);
+
   const zoom = useSyncExternalStore(
-    (onChange) => {
-      const key = view?.on('change:resolution', onChange);
-      return () => key && unByKey(key);
-    },
+    subscribe,
     () => view?.getZoom(),
     () => undefined,
   );

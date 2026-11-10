@@ -235,7 +235,7 @@ describe('MapFeaturePopup', () => {
     expect(clearSelected).toHaveBeenCalledTimes(1);
   });
 
-  it('leaves an Escape something else already handled (e.g. cancelling a drawing)', () => {
+  it('leaves an Escape a focused control already used (e.g. the search box)', () => {
     vi.mocked(useFeatureSelect).mockReturnValue({ selected: coitTower, clearSelected });
     const handledEarlier = (event: KeyboardEvent) => event.preventDefault();
     document.addEventListener('keydown', handledEarlier, true);

@@ -151,6 +151,20 @@ describe('GET /api/mapbox/[...path]', () => {
     expect(await res.text()).not.toContain(TOKEN);
   });
 
+  it('stops the Mapbox request when the browser cancels, e.g. a tile no longer needed', async () => {
+    const browser = new AbortController();
+    const url = new URL('/api/mapbox/v4/mapbox.mapbox-streets-v8/3/1/2.vector.pbf', ORIGIN);
+
+    await GET(
+      new NextRequest(url, { headers: { 'sec-fetch-site': 'same-origin' }, signal: browser.signal }),
+      { params: Promise.resolve({ path: ['v4', 'mapbox.mapbox-streets-v8', '3', '1', '2.vector.pbf'] }) } as RouteContext<'/api/mapbox/[...path]'>,
+    );
+    const { signal } = fetchMock.mock.calls[0][1] as RequestInit;
+    browser.abort();
+
+    expect(signal!.aborted).toBe(true);
+  });
+
   describe('when Mapbox fails to answer', () => {
     it('gives up after a while with 504', async () => {
       fetchMock.mockRejectedValue(new DOMException('The operation timed out.', 'TimeoutError'));

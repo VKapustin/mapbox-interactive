@@ -77,6 +77,14 @@ Requirements: Node.js 20.9 or later, and a [Mapbox access token](https://account
 | `MAPBOX_TOKEN` | Yes | Mapbox access token, used only by the server proxy. |
 | `WIKIMEDIA_USER_AGENT` | No | User-Agent for Wikipedia requests. Wikimedia asks for contact details, e.g. `mapbox-interactive/0.1 (https://example.com; you@example.com)`. |
 
+### Browser support
+
+Safari 16+ (iOS 16+), Chrome and Edge 105+, Firefox 110+. The layout of the
+controls over the map uses CSS container queries, and the browser's requests to
+this app's API use `AbortSignal.timeout`; older browsers lack both, so the
+search box and the panel overlap, and the landmarks, search, the details drawer
+and area filtering don't load.
+
 ## Scripts
 
 | Command | What it does |

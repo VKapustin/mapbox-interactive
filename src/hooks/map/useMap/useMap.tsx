@@ -50,6 +50,9 @@ type MapContextValue = {
   // For the current AOI, how many of each layer's features are inside it, by
   // layer id. Null without an AOI, and while it's loading (or if it failed).
   aoiSummary: Record<string, AoiLayerSummary> | null;
+  // True when the summary for the current AOI failed to load (e.g. the server
+  // rejected the area); the landmark layers' requests likely failed too.
+  aoiSummaryFailed: boolean;
   // Fits the view to a data layer's features (only those inside the AOI while
   // there is one), showing the layer first if hidden.
   zoomToLayer: (layerId: string) => void;
@@ -178,9 +181,14 @@ const useMapHookSource = (config: MapConfig): MapContextValue => {
     Object.fromEntries(config.layers.map((layer) => [layer.id, layer.visible])),
   );
   const [ aoi, setAoi ] = useState<string | null>(null);
-  // The last AOI summary loaded, with the AOI it's for.
-  const [loadedSummary, setLoadedSummary] = useState<{ aoi: string; layers: Record<string, AoiLayerSummary> } | null>(null);
-  const aoiSummary = aoi && loadedSummary?.aoi === aoi ? loadedSummary.layers : null;
+
+  // The last AOI summary loaded (or failed to load), with the AOI it's for.
+  const [loadedSummary, setLoadedSummary] = useState<
+    { aoi: string; layers: Record<string, AoiLayerSummary> } | { aoi: string; failed: true } | null
+  >(null);
+  const currentSummary = aoi && loadedSummary?.aoi === aoi ? loadedSummary : null;
+  const aoiSummary = currentSummary && 'layers' in currentSummary ? currentSummary.layers : null;
+  const aoiSummaryFailed = !!currentSummary && 'failed' in currentSummary;
 
   // The data layers show only the features inside the AOI (all of them without one).
   useEffect(() => {
@@ -202,6 +210,7 @@ const useMapHookSource = (config: MapConfig): MapContextValue => {
       .catch((err) => {
         if (!controller.signal.aborted) {
           console.error('Failed to load the area of interest summary', err);
+          setLoadedSummary({ aoi, failed: true });
         }
       });
 
@@ -285,6 +294,16 @@ const useMapHookSource = (config: MapConfig): MapContextValue => {
     setLayerVisibility((current) => ({ ...current, [layerId]: visible }));
   };
 
+  // Fits the view to the drawn area itself; false if there is none.
+  const fitToAoi = (map: Map): boolean => {
+    const parsedAoi = aoi ? parseAoi(aoi) : null;
+
+    if (parsedAoi) {
+      fitView(map, transformExtent(getAoiExtent(parsedAoi), 'EPSG:4326', map.getView().getProjection()), ZOOM_TO_LAYER_DURATION_MS);
+    }
+    return !!parsedAoi;
+  };
+
   // Shows the layer if it's hidden and fits the view to it, right away: its
   // extent comes from the config (or the AOI summary), so nothing needs to load
   // first. A layer with nothing inside the AOI stays where it is.
@@ -298,6 +317,12 @@ const useMapHookSource = (config: MapConfig): MapContextValue => {
 
     if (!layer.getVisible()) {
       setLayerVisible(layerId, true);
+    }
+
+    // The area's landmarks couldn't be loaded (the map shows none): show the
+    // area the error is about, not the layer's landmarks everywhere.
+    if (aoiSummaryFailed && fitToAoi(map)) {
+      return;
     }
 
     fitView(map, getLayerExtent(map, config, layer, aoiSummary), ZOOM_TO_LAYER_DURATION_MS);
@@ -318,11 +343,9 @@ const useMapHookSource = (config: MapConfig): MapContextValue => {
       .forEach((layer) => setLayerVisible(layer.get('id'), true));
 
     const extent = getLayersExtent(map, config, layers, aoiSummary);
-    const parsedAoi = aoi ? parseAoi(aoi) : null;
 
-    // Nothing inside the AOI: show the area itself.
-    if (isEmpty(extent) && parsedAoi) {
-      fitView(map, transformExtent(getAoiExtent(parsedAoi), 'EPSG:4326', map.getView().getProjection()), ZOOM_TO_LAYER_DURATION_MS);
+    // Nothing inside the AOI, or its landmarks couldn't be loaded: show the area itself.
+    if ((aoiSummaryFailed || isEmpty(extent)) && fitToAoi(map)) {
       return;
     }
 
@@ -340,6 +363,7 @@ const useMapHookSource = (config: MapConfig): MapContextValue => {
     aoi,
     setAoi,
     aoiSummary,
+    aoiSummaryFailed,
     zoomToLayer,
     zoomToLayers,
   };

@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { NextRequest } from 'next/server';
 import { GET } from '@/app/api/wikipedia/summary/[title]/route';
 import { WIKIMEDIA_USER_AGENT } from '@/server/wikipedia/wikipedia';
+import { UPSTREAM_TIMEOUT_MS } from '@/constant/constant';
 
 const get = (title: string) =>
   GET(
@@ -71,6 +72,32 @@ describe('GET /api/wikipedia/summary/[title]', () => {
 
       expect((await get('Coit_Tower')).status).toBe(504);
       expect(fetchMock.mock.calls[0][1].signal).toBeInstanceOf(AbortSignal);
+    });
+
+    it('gives up with 504 when the body stalls after the headers', async () => {
+      // The route's timeout, made controllable (AbortSignal.timeout runs on the real clock).
+      const timeout = new AbortController();
+      const timeoutSpy = vi.spyOn(AbortSignal, 'timeout').mockReturnValue(timeout.signal);
+      // Headers arrive at once; the body never finishes unless the request is aborted.
+      fetchMock.mockImplementation(async (_url: string, init: RequestInit) => new Response(new ReadableStream({
+        start(controller) {
+          init.signal!.addEventListener('abort', () => controller.error(init.signal!.reason));
+        },
+      }), { headers: { 'content-type': 'application/json' } }));
+
+      const response = get('Coit_Tower');
+      // Let the headers arrive and the body read start, then time out.
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      timeout.abort(new DOMException('The operation timed out.', 'TimeoutError'));
+
+      expect(timeoutSpy).toHaveBeenCalledWith(UPSTREAM_TIMEOUT_MS);
+      expect((await response).status).toBe(504);
+    });
+
+    it('returns 502 when Wikipedia sends something that isn\'t JSON', async () => {
+      fetchMock.mockResolvedValue(new Response('<html>oops</html>'));
+
+      expect((await get('Coit_Tower')).status).toBe(502);
     });
 
     it('returns 502 when Wikipedia can\'t be reached', async () => {

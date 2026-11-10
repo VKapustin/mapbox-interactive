@@ -22,6 +22,7 @@ import {
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
+import SoftDisabledIconButton from '@/components/SoftDisabledIconButton/SoftDisabledIconButton';
 import { useMap } from '@/hooks/map';
 import { getDataLayerStyle } from '@/helpers/mapHelpers';
 import { type MapDataLayerConfig } from 'MapTypes';
@@ -38,7 +39,16 @@ import { STORAGE_KEYS } from '@/constant/constant';
 // landmarks are inside it (also while the list is collapsed), and a country
 // with none inside can't be zoomed to. Renders nothing when there are no layers.
 const LandmarksControl: FC = () => {
-  const { config, status, layerVisibility, setLayerVisible, zoomToLayer, zoomToLayers, aoiSummary } = useMap();
+  const {
+    config,
+    status,
+    layerVisibility,
+    setLayerVisible,
+    zoomToLayer,
+    zoomToLayers,
+    aoiSummary,
+    aoiSummaryFailed,
+  } = useMap();
   const text = useString('landmarksControl');
   const isVisible = (layer: MapDataLayerConfig) => layerVisibility[layer.id] ?? layer.visible;
   const isEmptyInAoi = (layer: MapDataLayerConfig) => aoiSummary?.[layer.id]?.count === 0;
@@ -60,17 +70,19 @@ const LandmarksControl: FC = () => {
         <LandmarksTitle>{text.title}</LandmarksTitle>
         <LandmarksActions>
           <Tooltip
-            title={text.zoomToAll}
+            // Says why it's soft-disabled while a style loads.
+            title={status === 'loading' ? text.zoomWhileLoading : text.zoomToAll}
             placement={'auto'}
+            describeChild
           >
-            <IconButton
+            <SoftDisabledIconButton
               size='small'
               aria-label={text.zoomToAll}
-              disabled={status === 'loading'}
+              softDisabled={status === 'loading'}
               onClick={zoomToLayers}
             >
               <ZoomInMapIcon fontSize='small' />
-            </IconButton>
+            </SoftDisabledIconButton>
           </Tooltip>
           <Tooltip
             title={expanded ? text.collapseList : text.expandList}
@@ -93,7 +105,9 @@ const LandmarksControl: FC = () => {
         </LandmarksActions>
       </LandmarksTitleWrapper>
       {/* Always rendered, so screen readers announce the text when it appears. */}
-      <LandmarksMessage role='status'>{noneInAoi ? text.noneInAoi : null}</LandmarksMessage>
+      <LandmarksMessage role='status'>
+        {noneInAoi ? text.noneInAoi : aoiSummaryFailed ? text.aoiFailed : null}
+      </LandmarksMessage>
       {/* Collapsed, the list is hidden from screen readers and the keyboard too. */}
       <LayerListCollapse
         id={listId}
@@ -119,17 +133,25 @@ const LandmarksControl: FC = () => {
                   }
                 />
                 <Tooltip
-                  title={`${text.zoomTo} ${layer.label}`}
+                  // Says why it's disabled when the area holds none of this layer's landmarks.
+                  title={
+                    status === 'loading'
+                      ? text.zoomWhileLoading
+                      : isEmptyInAoi(layer) ? text.zoomToEmpty : `${text.zoomTo} ${layer.label}`
+                  }
                   placement={'auto'}
+                  describeChild
                 >
-                  <IconButton
+                  {/* Soft-disabled rather than disabled, so the reason shows on hover and
+                      keyboard focus, and screen readers hear it (describeChild). */}
+                  <SoftDisabledIconButton
                     size='small'
                     aria-label={`${text.zoomTo} ${layer.label}`}
-                    disabled={status === 'loading' || isEmptyInAoi(layer)}
+                    softDisabled={status === 'loading' || isEmptyInAoi(layer)}
                     onClick={() => zoomToLayer(layer.id)}
                   >
                     <ZoomInMapIcon fontSize='small' />
-                  </IconButton>
+                  </SoftDisabledIconButton>
                 </Tooltip>
               </LayerRow>
             ))}

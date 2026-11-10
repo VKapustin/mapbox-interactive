@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useEffect, useId, useState } from 'react';
+import { FC, useId, useState } from 'react';
 import { Box, Link, Skeleton, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -20,6 +20,7 @@ import { formatLonLat } from '@/helpers/mapHelpers';
 import { useWikipediaSummary } from '@/hooks/wikipedia';
 import { type SelectedFeature } from '@/hooks/map';
 import { useString } from '@/hooks/string';
+import { useEscape } from '@/hooks/escape';
 
 type MapFeatureDrawerProps = {
   // Open while a feature is set.
@@ -76,23 +77,9 @@ const MapFeatureDrawer: FC<MapFeatureDrawerProps> = ({ feature, onClose }) => {
   const open = !!feature;
 
   // The covering drawer closes on Escape by itself (it's a modal); the one beside
-  // the map needs its own listener. A popup open at the same time handles Escape
-  // first and marks it handled, so one press closes one thing.
-  useEffect(() => {
-    if (!open || coversMap) {
-      return;
-    }
-
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && !event.defaultPrevented) {
-        onClose();
-      }
-    };
-
-    document.addEventListener('keydown', closeOnEscape);
-
-    return () => document.removeEventListener('keydown', closeOnEscape);
-  }, [open, coversMap, onClose]);
+  // the map uses the shared Escape handling, so a popup or drawing opened after
+  // it closes first.
+  useEscape(open && !coversMap, onClose);
 
   return (
     <MapFeatureDrawerRoot

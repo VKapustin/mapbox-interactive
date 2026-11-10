@@ -117,7 +117,7 @@ describe('MapFeatureDrawer', () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
-  it('leaves Escape to whatever already handled it, like the popup', () => {
+  it('leaves an Escape a focused control already used (e.g. the search box)', () => {
     const onClose = vi.fn();
     renderWithTheme(<MapFeatureDrawer feature={coitTower} onClose={onClose} />);
 

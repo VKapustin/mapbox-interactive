@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { udl, UdlError } from '@/udl/udl';
+import { anySignal, udl, UdlError } from '@/udl/udl';
 import { UDL_MAX_RETRY_WAIT_MS, UDL_TIMEOUT_MS } from '@/constant/constant';
 
 const json = (body: unknown, init?: ResponseInit) => Response.json(body, init);
@@ -166,6 +166,50 @@ describe('udl', () => {
 
       expect(signal!.aborted).toBe(true);
       expect((signal!.reason as Error).name).toBe('TimeoutError');
+    });
+
+    it('works in browsers without AbortSignal.any (before Safari 17.4)', async () => {
+      vi.spyOn(AbortSignal, 'any').mockImplementation(() => { throw new TypeError('AbortSignal.any is not a function'); });
+      fetchMock.mockResolvedValue(json({ features: [] }));
+      const controller = new AbortController();
+
+      expect(await udl.searchPlaces(new URLSearchParams({ q: 'Coit' }), controller.signal)).toEqual({ features: [] });
+      const { signal } = fetchMock.mock.calls[0][1] as RequestInit;
+      controller.abort();
+      expect(signal!.aborted).toBe(true);
+    });
+  });
+
+  describe('anySignal', () => {
+    it('aborts when any of the signals does, with that one\'s reason', () => {
+      const first = new AbortController();
+      const second = new AbortController();
+      const combined = anySignal([first.signal, second.signal]);
+
+      expect(combined.aborted).toBe(false);
+      second.abort('second');
+
+      expect(combined.aborted).toBe(true);
+      expect(combined.reason).toBe('second');
+    });
+
+    it('is aborted right away when a signal already is', () => {
+      const combined = anySignal([new AbortController().signal, AbortSignal.abort('done')]);
+
+      expect(combined.aborted).toBe(true);
+      expect(combined.reason).toBe('done');
+    });
+
+    it('stops listening to the others once aborted, so they don\'t keep it alive', () => {
+      const first = new AbortController();
+      const second = new AbortController();
+      const remove = vi.spyOn(second.signal, 'removeEventListener');
+      const combined = anySignal([first.signal, second.signal]);
+
+      first.abort();
+
+      expect(combined.aborted).toBe(true);
+      expect(remove).toHaveBeenCalledWith('abort', expect.any(Function), expect.anything());
     });
   });
 });

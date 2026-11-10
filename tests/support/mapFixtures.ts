@@ -36,5 +36,6 @@ export const createMapContextValue = (overrides: Partial<MapContextValue> = {}):
   aoi: null,
   setAoi: vi.fn(),
   aoiSummary: null,
+  aoiSummaryFailed: false,
   ...overrides,
 });

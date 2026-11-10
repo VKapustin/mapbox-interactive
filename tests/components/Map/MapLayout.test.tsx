@@ -65,21 +65,27 @@ describe('MapLayout', () => {
 
   it('closes the popup first, then the drawer, on Escape', async () => {
     const clearSelected = vi.fn();
-    const coitTower = {
+    const landmark = (name: string, lonLat: [number, number]) => ({
       layerId: 'landmarks',
-      name: 'Coit Tower',
-      coordinate: fromLonLat([-122.4058, 37.8024]),
-      lonLat: [-122.4058, 37.8024] as [number, number],
-    };
-    vi.mocked(useFeatureSelect).mockReturnValue({ selected: coitTower, clearSelected });
+      name,
+      coordinate: fromLonLat(lonLat),
+      lonLat,
+    });
+    vi.mocked(useFeatureSelect).mockReturnValue({ selected: landmark('Coit Tower', [-122.4058, 37.8024]), clearSelected });
     const user = userEvent.setup();
 
+    // Open the drawer from the popup; the popup closes as the drawer opens.
     const { rerender } = renderWithTheme(<MapLayout />);
     await user.click(screen.getByRole('button', { name: 'Show more info…', hidden: true }));
-    expect(screen.getByRole('complementary', { name: 'Coit Tower' })).toBeInTheDocument();
+    vi.mocked(useFeatureSelect).mockReturnValue({ selected: null, clearSelected });
+    rerender(<MapLayout />);
+
+    // Then click another landmark: its popup opens on top of the drawer.
+    vi.mocked(useFeatureSelect).mockReturnValue({ selected: landmark('Ferry Building', [-122.3934, 37.7955]), clearSelected });
+    rerender(<MapLayout />);
     clearSelected.mockClear();
 
-    // The mocked selection keeps the popup open: Escape closes it and leaves the drawer.
+    // The most recently opened closes first: the popup, leaving the drawer.
     await user.keyboard('{Escape}');
     expect(clearSelected).toHaveBeenCalledTimes(1);
     expect(screen.getByRole('complementary', { name: 'Coit Tower' })).toBeInTheDocument();

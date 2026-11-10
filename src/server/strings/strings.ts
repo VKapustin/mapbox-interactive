@@ -38,6 +38,10 @@ export const strings = {
     draw: 'Draw an area of interest',
     stopDrawing: 'Stop drawing',
     clear: 'Clear the area of interest',
+    // The eraser's tooltip while there's nothing to clear.
+    nothingToClear: 'Nothing to clear: no area drawn yet',
+    // When a drawn polygon has more corners than an area can have.
+    areaRejected: 'That area has too many corners to use. Draw it again with fewer clicks.',
   },
   landmarksControl: {
     title: 'Landmarks',
@@ -45,6 +49,11 @@ export const strings = {
     zoomTo: 'Zoom to',
     zoomToAll: 'Show and zoom to all landmarks',
     noneInAoi: 'No landmarks in the selected area.',
+    // The tooltip of a country's zoom button when the area holds none of its landmarks.
+    zoomToEmpty: 'Nothing to zoom to: no landmarks in the selected area',
+    // The zoom buttons' tooltip while a map style is loading (they wait for it).
+    zoomWhileLoading: 'Available once the map style has loaded',
+    aoiFailed: 'Couldn\'t load the landmarks in the selected area. Try drawing it again.',
     // The expand / collapse button: its name, and its tooltip in each state.
     list: 'Landmark list',
     collapseList: 'Collapse the list',

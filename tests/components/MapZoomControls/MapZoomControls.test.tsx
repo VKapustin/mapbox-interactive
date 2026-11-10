@@ -87,6 +87,18 @@ describe('MapZoomControls', () => {
     expect(screen.getByRole('button', { name: 'Zoom in' })).toBeDisabled();
   });
 
+  it('subscribes to the view once, not after every render', () => {
+    const on = vi.spyOn(map.getView(), 'on');
+    const { rerender } = renderWithTheme(<MapZoomControls />);
+
+    // Each zoom step re-renders the buttons.
+    act(() => map.getView().setZoom(10));
+    act(() => map.getView().setZoom(11));
+    rerender(<MapZoomControls />);
+
+    expect(on).toHaveBeenCalledTimes(1);
+  });
+
   it('is disabled until the map is available', () => {
     vi.mocked(useMap).mockReturnValue(createMapContextValue({ map: null }));
 

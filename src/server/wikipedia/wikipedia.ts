@@ -28,6 +28,11 @@ let allowedTitles: Promise<Set<string>> | undefined;
 // The summary route only serves articles the map data links to, so it can't be
 // used to fetch arbitrary Wikipedia content through this server.
 export const getAllowedWikipediaTitles = (): Promise<Set<string>> => {
-  allowedTitles ??= buildAllowedTitles();
+  // A failed build isn't kept, so the next request tries again (e.g. after a
+  // database hiccup, once the data lives in one).
+  allowedTitles ??= buildAllowedTitles().catch((err: unknown) => {
+    allowedTitles = undefined;
+    throw err;
+  });
   return allowedTitles;
 };

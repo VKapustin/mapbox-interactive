@@ -420,17 +420,39 @@ describe('useMap', () => {
         expect(fit).toHaveBeenCalledWith(toMap([2.28, 48.85, 2.31, 48.87]), expect.anything());
       });
 
-      it('logs, and keeps the config extents, when the summary fails', async () => {
+      it('reports a failed summary, and zooms to the area itself rather than everywhere', async () => {
         vi.spyOn(console, 'error').mockImplementation(() => {});
         vi.spyOn(udl, 'getAoiSummary').mockRejectedValue(new Error('offline'));
         const { result, fit } = await renderFittingMap({ ...fitConfig, view: testMapConfig.view });
 
         act(() => result.current.setAoi(AOI));
-        await waitFor(() => expect(console.error).toHaveBeenCalled());
-        act(() => result.current.zoomToLayer('paris'));
+        await waitFor(() => expect(result.current.aoiSummaryFailed).toBe(true));
 
+        expect(console.error).toHaveBeenCalled();
         expect(result.current.aoiSummary).toBeNull();
-        expect(fit).toHaveBeenCalledWith(toMap(PARIS), expect.anything());
+
+        // The map shows no landmarks, so both zooms go to the area the error is about.
+        const area = toMap([2.28, 48.85, 2.31, 48.87]);
+        act(() => result.current.zoomToLayer('paris'));
+        expect(fit).toHaveBeenLastCalledWith(area, expect.anything());
+        act(() => result.current.zoomToLayers());
+        expect(fit).toHaveBeenLastCalledWith(area, expect.anything());
+      });
+
+      it('forgets the failure once the area is cleared or redrawn', async () => {
+        vi.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(udl, 'getAoiSummary').mockRejectedValueOnce(new Error('offline')).mockResolvedValue(summary);
+        const { result } = await renderFittingMap({ ...fitConfig, view: testMapConfig.view });
+        act(() => result.current.setAoi(AOI));
+        await waitFor(() => expect(result.current.aoiSummaryFailed).toBe(true));
+
+        act(() => result.current.setAoi(null));
+        expect(result.current.aoiSummaryFailed).toBe(false);
+
+        const redrawn = AOI.replace('2.28', '2.27');
+        act(() => result.current.setAoi(redrawn));
+        await waitFor(() => expect(result.current.aoiSummary).toEqual(summary.layers));
+        expect(result.current.aoiSummaryFailed).toBe(false);
       });
     });
   });

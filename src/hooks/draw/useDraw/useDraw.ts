@@ -10,14 +10,16 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Fill, Stroke, Style } from 'ol/style';
 import { useMap } from '@/hooks/map';
+import { useEscape } from '@/hooks/escape';
 import { AOI_COLOR, AOI_COORDINATE_DECIMALS, DRAW_Z_INDEX } from '@/constant/constant';
+import { parseAoi } from '@/helpers/aoiHelpers';
+import { getWidth } from 'ol/extent';
+import type Polygon from 'ol/geom/Polygon';
 import CircleStyle from 'ol/style/Circle';
 
+// The area itself is `aoi` in the map context (useMap), the single source of
+// truth; the polygon on the map always shows it, whoever set it.
 type DrawState = {
-  // The area of interest from the map context (useMap): a GeoJSON Polygon
-  // geometry string in lon/lat (EPSG:4326), or null. It's the single source of
-  // truth: the polygon on the map always shows it, whoever set it.
-  aoi: string | null;
   // True while the user is placing the polygon's corners.
   isDrawing: boolean;
   // Starts drawing a new polygon: click to add corners, double-click (or click
@@ -28,6 +30,10 @@ type DrawState = {
   stopDrawing: () => void;
   // Cancels any drawing and removes the area of interest.
   clearDrawing: () => void;
+  // True when the last polygon drawn couldn't be used, so it wasn't set as the
+  // area (e.g. more corners than AOI_MAX_VERTICES); until the next drawing.
+  areaRejected: boolean;
+  dismissAreaRejected: () => void;
 };
 
 const aoiFormat = new GeoJSON();
@@ -62,6 +68,7 @@ export const useDraw = (): DrawState => {
     setAoi,
   } = useMap();
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
+  const [areaRejected, setAreaRejected] = useState(false);
 
   const sourceRef = useRef<VectorSource | null>(null);
   const drawRef = useRef<Draw | null>(null);
@@ -120,29 +127,9 @@ export const useDraw = (): DrawState => {
     setIsDrawing(false);
   };
 
-  // Escape cancels the polygon being drawn, like closing a dialog. One press
-  // closes one thing: an Escape another control already handled (e.g. closing
-  // the feature popup) is left alone, and this one is marked handled so the
-  // details drawer stays open. Capture phase, like the popup, so it runs before
-  // the drawer's listener.
-  useEffect(() => {
-    if (!isDrawing) {
-      return;
-    }
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape' || event.defaultPrevented) {
-        return;
-      }
-
-      event.preventDefault();
-      removeDraw(map, drawRef);
-      setIsDrawing(false);
-    };
-
-    document.addEventListener('keydown', onKeyDown, true);
-    return () => document.removeEventListener('keydown', onKeyDown, true);
-  }, [isDrawing, map]);
+  // Escape cancels the polygon being drawn, like closing a dialog (before
+  // anything opened earlier, such as the details drawer).
+  useEscape(isDrawing, stopDrawing);
 
   const startDrawing = (): void => {
     if (!map) {
@@ -150,6 +137,7 @@ export const useDraw = (): DrawState => {
     }
 
     removeDrawInteraction();
+    setAreaRejected(false);
 
     // No source: Draw only reports the finished polygon, and setting it as the
     // AOI puts it on the layer (replacing the previous area).
@@ -158,11 +146,29 @@ export const useDraw = (): DrawState => {
     const draw = new Draw({ type: 'Polygon', style: createAoiStyle(), freehandCondition: never });
 
     draw.on('drawend', (event) => {
-      setAoi(aoiFormat.writeGeometry(event.feature.getGeometry()!, {
+      // Zoomed far out, the map repeats the world side by side, and a shape
+      // drawn on a copy has longitudes past ±180°. Move it back by whole worlds
+      // so its first corner is within ±180° (the server matches points across
+      // one world either side).
+      const projection = map.getView().getProjection();
+      const geometry = (event.feature.getGeometry() as Polygon).clone();
+      const worldWidth = getWidth(projection.getExtent());
+      const [firstX] = geometry.getFirstCoordinate();
+      geometry.translate(-Math.round(firstX / worldWidth) * worldWidth, 0);
+
+      const aoi = aoiFormat.writeGeometry(geometry, {
         dataProjection: 'EPSG:4326',
-        featureProjection: map.getView().getProjection(),
+        featureProjection: projection,
         decimals: AOI_COORDINATE_DECIMALS,
-      }));
+      });
+
+      // Only an area the server accepts (e.g. at most AOI_MAX_VERTICES corners);
+      // anything else would fail every request and empty the landmark layers.
+      if (parseAoi(aoi)) {
+        setAoi(aoi);
+      } else {
+        setAreaRejected(true);
+      }
 
       setIsDrawing(false);
 
@@ -185,10 +191,13 @@ export const useDraw = (): DrawState => {
   const clearDrawing = (): void => {
     stopDrawing();
     setAoi(null);
+    // Nothing is left for a "too many corners" warning to refer to.
+    setAreaRejected(false);
   };
 
   return {
-    aoi,
+    areaRejected,
+    dismissAreaRejected: () => setAreaRejected(false),
     isDrawing,
     startDrawing,
     stopDrawing,
