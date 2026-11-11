@@ -6,6 +6,8 @@ browser: every Mapbox request goes through this app's server.
 
 Developed by [Viacheslav Kapustin](https://github.com/VKapustin/).
 
+![The map opened on the landmarks, with clusters across the USA and the Landmarks panel](docs/screenshots/01-overview.jpg)
+
 ## Features
 
 - **Mapbox basemaps without exposing the token.** Vector styles (Streets,
@@ -40,6 +42,26 @@ Developed by [Viacheslav Kapustin](https://github.com/VKapustin/).
 - **Responsive layout.** On a narrow map (a phone, or a desktop with the details
   drawer open) the search box and the panel stack instead of overlapping.
   Light and dark themes follow the system setting.
+
+## Screenshots
+
+**A landmark's popup:** photo, description, coordinates and photo credit.
+
+![The Colosseum's popup on the map near Rome](docs/screenshots/02-popup.jpg)
+
+**The details drawer:** the Wikipedia summary, with its credit, beside the map.
+
+![The details drawer open for the Colosseum, next to the map](docs/screenshots/03-details.jpg)
+
+**Filtering by a drawn area:** only the landmarks inside it stay on the map,
+and countries with none inside can't be zoomed to.
+
+![An area drawn over Nevada and Arizona, leaving only Hoover Dam and the Grand Canyon](docs/screenshots/04-area-filter.jpg)
+
+**On a phone:** the search box and the panel stack, here with the landmark list
+collapsed.
+
+<img src="docs/screenshots/05-phone.jpg" alt="The map on a phone, zoomed to France, with the landmark list collapsed" width="300">
 
 ## Getting started
 
@@ -128,6 +150,7 @@ src/
   theme/          MUI theme (light and dark)
   types/          Shared TypeScript types
 public/landmarks/ Landmark photos, one folder per layer
+docs/screenshots/ The screenshots in this README
 assets/icon/      Icon drawings; `node assets/icon/build-icons.mjs` rebuilds
                   src/app/favicon.ico and src/app/apple-icon.png
 tests/            Vitest tests, mirroring src/
