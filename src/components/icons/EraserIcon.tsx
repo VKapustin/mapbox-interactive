@@ -1,12 +1,31 @@
 import { createSvgIcon } from '@mui/material/utils';
 
-// An outline eraser in the style of @mui/icons-material: built with
-// createSvgIcon, so it takes the same props (fontSize, color, sx, …) and gets
-// data-testid="EraserIcon" like the built-in icons.
+// The "eraser" icon from Lucide (https://lucide.dev/icons/eraser, lucide-static
+// v1.71.0), as a MUI icon: built with createSvgIcon, so it takes the same props
+// (fontSize, color, sx, …) and gets data-testid="EraserIcon" like the built-in
+// icons.
 //
-// The path fills almost the whole 24px box, while Material icons leave about
-// 2px of space around the glyph, so it's drawn at 90% around the center to
-// look the same size as the icons next to it.
+// The drawing fills almost the whole 24px box, while Material icons leave about
+// 2px of space around the glyph, so it's drawn at 90% around the center to look
+// the same size as the icons next to it.
+//
+// Lucide's icons are under the ISC License, whose notice must be kept with them:
+//
+//   ISC License
+//
+//   Copyright (c) 2026 Lucide Icons and Contributors
+//
+//   Permission to use, copy, modify, and/or distribute this software for any
+//   purpose with or without fee is hereby granted, provided that the above
+//   copyright notice and this permission notice appear in all copies.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+//   WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+//   MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+//   ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+//   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+//   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+//   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 const EraserIcon = createSvgIcon(
   <g
     transform='translate(12 12) scale(0.9) translate(-12 -12)'
@@ -16,7 +35,8 @@ const EraserIcon = createSvgIcon(
     strokeLinecap='round'
     strokeLinejoin='round'
   >
-    <path d='M17.9995 13L10.9995 6.00004M20.9995 21H7.99955M10.9368 20.0628L19.6054 11.3941C20.7935 10.2061 21.3875 9.61207 21.6101 8.92709C21.8058 8.32456 21.8058 7.67551 21.6101 7.07298C21.3875 6.388 20.7935 5.79397 19.6054 4.60592L19.3937 4.39415C18.2056 3.2061 17.6116 2.61207 16.9266 2.38951C16.3241 2.19373 15.675 2.19373 15.0725 2.38951C14.3875 2.61207 13.7935 3.2061 12.6054 4.39415L4.39366 12.6059C3.20561 13.794 2.61158 14.388 2.38902 15.073C2.19324 15.6755 2.19324 16.3246 2.38902 16.9271C2.61158 17.6121 3.20561 18.2061 4.39366 19.3941L5.06229 20.0628C5.40819 20.4087 5.58114 20.5816 5.78298 20.7053C5.96192 20.815 6.15701 20.8958 6.36108 20.9448C6.59126 21 6.83585 21 7.32503 21H8.67406C9.16324 21 9.40784 21 9.63801 20.9448C9.84208 20.8958 10.0372 20.815 10.2161 20.7053C10.418 20.5816 10.5909 20.4087 10.9368 20.0628Z' />
+    <path d='M21 21H8a2 2 0 0 1-1.42-.587l-3.994-3.999a2 2 0 0 1 0-2.828l10-10a2 2 0 0 1 2.829 0l5.999 6a2 2 0 0 1 0 2.828L12.834 21' />
+    <path d='m5.082 11.09 8.828 8.828' />
   </g>,
   'Eraser',
 );

@@ -218,3 +218,28 @@ be measured in jsdom, so check it in a browser.
   Art License) are in the layer data and shown with the photo.
 - Landmark summaries come from [Wikipedia](https://www.wikipedia.org/), loaded
   live and credited in the drawer with the landmark's details.
+
+## License
+
+The code is released under the [MIT License](LICENSE), © 2026 Viacheslav
+Kapustin. That covers this repository's own work: the source code, tests,
+landmark data and descriptions, the app icon drawings (`assets/icon/`) and
+screenshots.
+
+It doesn't cover third-party material, which keeps its own terms:
+
+- **Landmark photos** (`public/landmarks/`): Wikimedia Commons images under
+  Creative Commons, public domain or the Free Art License. Each photo's author,
+  license and source page are in the layer data (`src/server/map/data/`) and
+  shown with the photo; reusing a photo means following its license.
+- **Mapbox logo** (`public/mapbox-logo.svg`): a Mapbox trademark, shown here as
+  Mapbox's terms require. Map data and styles are © Mapbox and © OpenStreetMap
+  contributors, and need your own Mapbox account and token.
+- **The eraser icon** (`src/components/icons/EraserIcon.tsx`) is
+  [Lucide's eraser](https://lucide.dev/icons/eraser), under the ISC License,
+  whose notice is kept in that file.
+- **Wikipedia summaries** aren't stored in the repository; they're loaded live
+  under CC BY-SA 4.0 and credited where shown.
+- **Dependencies** in `package.json` (Next.js, MUI, OpenLayers and others) and
+  the Mulish font (SIL Open Font License, loaded by `next/font`) have their own
+  licenses.
