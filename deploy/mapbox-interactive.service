@@ -1,0 +1,39 @@
+# systemd service that runs the production build behind nginx. See "Deploying
+# to a VPS" in the README.
+#
+# Copy to /etc/systemd/system/mapbox-interactive.service, adjust User and the
+# paths if yours differ, then:
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now mapbox-interactive
+#   journalctl -u mapbox-interactive -f    # logs
+
+[Unit]
+Description=Mapbox Interactive (Next.js)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=mapbox
+Group=mapbox
+WorkingDirectory=/srv/mapbox-interactive
+Environment=NODE_ENV=production
+Environment=NEXT_TELEMETRY_DISABLED=1
+# MAPBOX_TOKEN and WIKIMEDIA_USER_AGENT: next start reads them from
+# /srv/mapbox-interactive/.env.local (readable by the mapbox user only).
+# Runs next directly (not through npm, which would need a writable home), and
+# listens on localhost only, so the app can't be reached without nginx and its
+# rate limits. Use the node path that `which node` prints.
+ExecStart=/usr/bin/node node_modules/next/dist/bin/next start -H 127.0.0.1 -p 3000
+Restart=on-failure
+RestartSec=5
+
+# Hardening: the app only needs to write its build cache.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/mapbox-interactive/.next
+
+[Install]
+WantedBy=multi-user.target

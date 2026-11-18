@@ -1,0 +1,114 @@
+# nginx in front of the app on a VPS: HTTPS, rate limiting and a cache for
+# Mapbox responses. See "Deploying to a VPS" in the README.
+#
+# Copy to /etc/nginx/conf.d/mapbox-interactive.conf (it's included inside the
+# http block there), replace example.com with your domain, then:
+#   sudo nginx -t && sudo systemctl reload nginx
+
+# Rate limits, one counter per client IP. nginx is the first thing every request
+# reaches, so $remote_addr is the client's real IP. (Behind Cloudflare or another
+# proxy, set set_real_ip_from and real_ip_header first, or all clients would
+# share one counter.) 10m of memory holds about 160,000 IPs.
+#
+# rate is the sustained rate; each location's burst lets a client go over it
+# briefly (panning the map loads dozens of tiles at once). Requests beyond the
+# burst get 429 with Retry-After (see @rate_limited), which the app's API client
+# retries once; a tile that gets 429 stays empty until the next pan. Requests
+# over the limit are logged to error.log as "limiting requests": watch it and
+# adjust the numbers.
+limit_req_zone $binary_remote_addr zone=mapbox:10m rate=10r/s;  # tiles, styles, sprites, fonts
+limit_req_zone $binary_remote_addr zone=search:10m rate=2r/s;   # Search Box: every keystroke costs
+limit_req_zone $binary_remote_addr zone=api:10m    rate=20r/s;  # the app's own API
+limit_req_status 429;
+
+# Disk cache for Mapbox responses. It follows the Cache-Control headers the app's
+# proxy sends (Mapbox's own, or one hour), so a cache hit costs neither Mapbox
+# quota nor the app's time. Check that Mapbox's terms allow server-side caching
+# on your plan; if not, remove this and the proxy_cache* lines below.
+proxy_cache_path /var/cache/nginx/mapbox levels=1:2 keys_zone=mapbox_cache:50m
+                 max_size=2g inactive=7d use_temp_path=off;
+
+upstream next_app {
+    # The app's systemd service (mapbox-interactive.service) listens here only.
+    server 127.0.0.1:3000;
+    keepalive 32;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name example.com;
+
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;  # nginx 1.25.1+; on older versions, use "listen 443 ssl http2;" instead
+    server_name example.com;
+
+    # From certbot (see the README).
+    ssl_certificate     /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+
+    # The area of interest travels in the URL (?aoi=), up to about 12 KB once
+    # URL-encoded. nginx's default 8k buffers would reject large drawn areas
+    # with 414.
+    large_client_header_buffers 4 16k;
+
+    # Headers for every response. They're set here only: an add_header inside a
+    # location would drop all of these for that location.
+    add_header Strict-Transport-Security "max-age=31536000" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    # HIT, MISS, EXPIRED…; only sent where proxy_cache is on (/api/mapbox/).
+    add_header X-Cache-Status $upstream_cache_status always;
+
+    # The Mapbox proxy's same-origin check compares the browser's Origin or
+    # Referer with the Host header, so nginx must pass the public host on.
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+
+    # Search Box suggestions: never cached, tighter limit.
+    location /api/mapbox/search/ {
+        limit_req zone=search burst=10 nodelay;
+        proxy_pass http://next_app;
+    }
+
+    # Styles, sprites, fonts and tiles.
+    location /api/mapbox/ {
+        limit_req zone=mapbox burst=300 nodelay;
+
+        # Note: cache hits are served by nginx without reaching the app, so the
+        # same-origin check doesn't apply to them. That costs bandwidth, not
+        # Mapbox quota.
+        proxy_cache mapbox_cache;
+        proxy_cache_lock on;  # many clients asking for one tile: one upstream request
+        proxy_cache_use_stale error timeout updating http_502 http_504;
+        proxy_pass http://next_app;
+    }
+
+    # The app's own API: layers, cluster tiles (one per layer and map tile, so
+    # they come in large bursts), the AOI summary and Wikipedia summaries.
+    location /api/ {
+        limit_req zone=api burst=400 nodelay;
+        proxy_pass http://next_app;
+    }
+
+    location / {
+        proxy_pass http://next_app;
+    }
+
+    # Rate-limited requests: tell the client when to try again. The app's API
+    # client retries once after Retry-After when it's 5 seconds or less.
+    error_page 429 @rate_limited;
+    location @rate_limited {
+        add_header Retry-After 1 always;
+        return 429 "Too many requests\n";
+    }
+}

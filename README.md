@@ -151,6 +151,7 @@ src/
   types/          Shared TypeScript types
 public/landmarks/ Landmark photos, one folder per layer
 docs/screenshots/ The screenshots in this README
+deploy/           systemd service and nginx site for a VPS (see "Deploying to a VPS")
 assets/icon/      Icon drawings; `node assets/icon/build-icons.mjs` rebuilds
                   src/app/favicon.ico and src/app/apple-icon.png
 tests/            Vitest tests, mirroring src/
@@ -208,6 +209,144 @@ npm run test:run
 Vitest with jsdom and React Testing Library covers the components, hooks,
 helpers, server code and API routes. Layout (sizes, scrolling, stacking) can't
 be measured in jsdom, so check it in a browser.
+
+## Deploying to a VPS
+
+The app needs a Node.js server; static hosting can't run its API routes. On a
+VPS, run the production build as a systemd service on localhost, with nginx in
+front for HTTPS, rate limiting and caching. Ready-made files are in `deploy/`:
+
+- `deploy/mapbox-interactive.service`: the systemd service.
+- `deploy/nginx.conf.example`: the nginx site.
+
+**Before going public**, protect your Mapbox account: every visitor's map uses
+your token through the proxy.
+
+- **Set a usage alert, or a cap,** in your Mapbox account.
+- **Give the token only the public read scopes** the app uses (styles, tiles,
+  fonts, Search).
+- **Rotate the token** if it ever leaks.
+- **A URL restriction won't work:** it checks the `Referer` header, and requests
+  from the server don't send one.
+
+### Setup
+
+Setup on Ubuntu or Debian, as a user with `sudo`:
+
+1. **Install Node.js 20.9 or later, nginx and certbot.**
+
+   ```bash
+   sudo apt install nginx certbot python3-certbot-nginx
+   ```
+
+2. **Create a user for the app, clone and build it.**
+
+   ```bash
+   sudo useradd --system --create-home --shell /usr/sbin/nologin mapbox
+   sudo install -d -o mapbox -g mapbox /srv/mapbox-interactive
+   sudo -u mapbox git clone <repository URL> /srv/mapbox-interactive
+   cd /srv/mapbox-interactive
+   sudo -u mapbox npm ci
+   ```
+
+   Set `MAPBOX_TOKEN` and `WIKIMEDIA_USER_AGENT` in
+   `/srv/mapbox-interactive/.env.local`. `next start` reads that file. Make it
+   readable by the app's user only:
+
+   ```bash
+   sudo -u mapbox cp .env.example .env.local
+   sudo -u mapbox chmod 600 .env.local
+   ```
+
+   After editing `.env.local`, build:
+
+   ```bash
+   sudo -u mapbox npm run build
+   ```
+
+3. **Start the service.** It listens on `127.0.0.1:3000` only, so requests
+   can't bypass nginx. Check the path to `node` in `ExecStart` against
+   `which node` first.
+
+   ```bash
+   sudo cp deploy/mapbox-interactive.service /etc/systemd/system/
+   sudo systemctl daemon-reload
+   sudo systemctl enable --now mapbox-interactive
+   ```
+
+4. **Get a certificate.** Point the domain's DNS at the server first. Do this
+   before installing the site, which refers to the certificate files. Certbot
+   renews the certificate on its own.
+
+   ```bash
+   sudo certbot certonly --nginx -d example.com
+   ```
+
+5. **Install the nginx site.** Replace `example.com` with your domain in
+   `/etc/nginx/conf.d/mapbox-interactive.conf`, then test and reload:
+
+   ```bash
+   sudo cp deploy/nginx.conf.example /etc/nginx/conf.d/mapbox-interactive.conf
+   ```
+
+   ```bash
+   sudo nginx -t && sudo systemctl reload nginx
+   ```
+
+### What the nginx site does
+
+- **Rate limits per client IP.**
+  - Tiles, styles and fonts: 10 requests/s with bursts of 300, because panning
+    loads many tiles at once.
+  - Search: 2 requests/s with bursts of 10, since every keystroke is a paid
+    Mapbox request.
+  - The app's own API: 20 requests/s with bursts of 400.
+  - Over the limit, nginx answers `429` with `Retry-After`. Watch `error.log`
+    for "limiting requests" and adjust the numbers.
+  - Behind Cloudflare or another proxy, configure `set_real_ip_from` first, or
+    every client shares one limit.
+- **Caches Mapbox responses** (not search) on disk, following their
+  `Cache-Control`.
+  - Repeated tiles cost no Mapbox quota. The `X-Cache-Status` response header
+    shows hits.
+  - Cached responses are served without reaching the app, so its same-origin
+    check doesn't apply to them.
+  - Check that Mapbox's terms allow server-side caching on your plan. If not,
+    remove the `proxy_cache*` lines.
+- **Allows long URLs** (`large_client_header_buffers 4 16k`). A detailed area of
+  interest travels in the URL, and nginx's default limit would answer `414`.
+- **Passes the public `Host` header** to the app, which the Mapbox proxy's
+  same-origin check needs.
+- **Adds security headers:** HSTS, `nosniff`, `Referrer-Policy` and
+  `X-Frame-Options`. There's no Content-Security-Policy yet.
+
+### Updating
+
+The landmark data is part of the build, so data changes need a rebuild too:
+
+```bash
+cd /srv/mapbox-interactive
+```
+
+```bash
+sudo -u mapbox git pull
+```
+
+```bash
+sudo -u mapbox npm ci
+```
+
+```bash
+sudo -u mapbox npm run build
+```
+
+```bash
+sudo systemctl restart mapbox-interactive
+```
+
+The app is one Node.js process, so its in-memory caches (cluster indexes, area
+results, the Wikipedia allowlist) are shared by all visitors. They're rebuilt
+after each restart.
 
 ## Credits
 
