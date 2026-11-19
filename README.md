@@ -274,6 +274,21 @@ Setup on Ubuntu or Debian, as a user with `sudo`:
    sudo systemctl enable --now mapbox-interactive
    ```
 
+   The service runs `next start` itself, so don't run `npm run start` by hand.
+   `--now` starts the app right away and `enable` starts it on every boot;
+   systemd also restarts it if it crashes. Check that it's running (look for
+   `active (running)` and `✓ Ready`) and that it answers:
+
+   ```bash
+   sudo systemctl status mapbox-interactive
+   ```
+
+   ```bash
+   curl -I http://127.0.0.1:3000
+   ```
+
+   Logs: `journalctl -u mapbox-interactive -f`.
+
 4. **Get a certificate.** Point the domain's DNS at the server first. Do this
    before installing the site, which refers to the certificate files. Certbot
    renews the certificate on its own.
@@ -287,6 +302,15 @@ Setup on Ubuntu or Debian, as a user with `sudo`:
 
    ```bash
    sudo cp deploy/nginx.conf.example /etc/nginx/conf.d/mapbox-interactive.conf
+   ```
+
+   Create the folder for the Mapbox cache. nginx creates only its last level,
+   and `/var/cache/nginx` doesn't exist on Ubuntu or Debian. The owner is the
+   user nginx's workers run as: `www-data` on Ubuntu and Debian, `nginx` on
+   RHEL and Fedora.
+
+   ```bash
+   sudo install -d -o www-data -g www-data -m 700 /var/cache/nginx/mapbox
    ```
 
    ```bash
@@ -347,6 +371,55 @@ sudo systemctl restart mapbox-interactive
 The app is one Node.js process, so its in-memory caches (cluster indexes, area
 results, the Wikipedia allowlist) are shared by all visitors. They're rebuilt
 after each restart.
+
+### Logs
+
+**The app.** systemd collects what the app prints: startup (`✓ Ready`),
+crashes and restarts, and server errors such as a failed Mapbox or Wikipedia
+request. Next.js doesn't log each request in production; nginx does.
+
+```bash
+journalctl -u mapbox-interactive -f
+```
+
+Ctrl+C stops following. Instead of `-f`: `-n 100` for the last 100 lines,
+`--since "1 hour ago"` for a period of time, `-p err` for errors only.
+
+**nginx.** Every request goes to `/var/log/nginx/access.log` (IP, time, URL,
+status, size), and nginx's own problems to `/var/log/nginx/error.log`.
+
+```bash
+sudo tail -f /var/log/nginx/access.log
+```
+
+Failed requests only (status 4xx or 5xx):
+
+```bash
+sudo awk '$9 >= 400' /var/log/nginx/access.log | tail -50
+```
+
+Clients that hit the rate limits. Each line names the zone (`mapbox`, `search`
+or `api`) and the IP. A few are normal; if ordinary visitors show up often,
+raise that zone's `burst`.
+
+```bash
+sudo grep "limiting requests" /var/log/nginx/error.log | tail -20
+```
+
+`502 Bad Gateway`, with "Connection refused" in `error.log`, means the app
+isn't running: check `systemctl status mapbox-interactive` and its journal.
+
+**The Mapbox cache.** Responses from `/api/mapbox/` carry `X-Cache-Status`. Ask
+for the same tile twice: the first says `MISS`, the second `HIT`.
+(`Sec-Fetch-Site` passes the app's same-origin check, as a browser does.)
+
+```bash
+curl -sI -H "Sec-Fetch-Site: same-origin" https://example.com/api/mapbox/v4/mapbox.mapbox-streets-v8/1/0/0.vector.pbf | grep -i x-cache
+```
+
+**Disk space.** The journal has a size limit, and logrotate keeps nginx's logs
+for about two weeks, compressing older ones (`access.log.2.gz`); read those
+with `sudo zcat`.
 
 ## Credits
 
